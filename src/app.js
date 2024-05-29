@@ -1,24 +1,26 @@
 import express from "express";
-import mongoose from "mongoose";
 import userRoutes from "./router/routers.js";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
+// Configurar CORS
+const corsOptions = {
+  origin: "*", // Permitir todas as origens
+  methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+  allowedHeaders: ["Content-Type", "Authorization", "Api-Token"], // Cabeçalhos permitidos
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use("/api", userRoutes);
 
-// Configuração para suprimir o aviso de depreciação
-mongoose.set("strictQuery", false); // ou false, conforme sua preferência
+const PORT = process.env.PORT || 3000;
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error(err));
-
-export default app;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

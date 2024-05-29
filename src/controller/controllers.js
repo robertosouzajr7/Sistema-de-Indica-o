@@ -1,21 +1,15 @@
-import User from "../model/models.js";
 import axios from "axios";
+import dotenv from "dotenv";
 
+dotenv.config();
 export const createUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone } = req.body;
-    const user = new User({ firstName, lastName, email, phone });
-    await user.save();
+    const { fullName, email, phone } = req.body;
 
     const contact = {
       email,
-      firstName,
-      lastName,
+      fullName,
       phone,
-      fieldValues: [
-        { field: "1", value: "The Value for First Field" },
-        { field: "6", value: "2008-01-20" },
-      ],
     };
 
     const response = await axios.post(
@@ -29,8 +23,30 @@ export const createUser = async (req, res) => {
       }
     );
 
-    res.status(201).json({ user, externalApiResponse: response.data });
+    res.status(201).json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const listUserById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await axios.get(`${process.env.API_URL}/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Api-Token": process.env.API_TOKEN,
+      },
+    });
+    console.log(user.data);
+    res.json(user.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data });
+    } else if (error.request) {
+      res.status(500).json({ error: "No response received from external api" });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
   }
 };
