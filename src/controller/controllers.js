@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 dotenv.config();
 export const createUser = async (req, res) => {
   try {
-    const { fullName, email, phone } = req.body;
+    const { fistName, lastName, email, phone } = req.body;
 
     const contact = {
       email,
-      fullName,
+      fistName,
+      lastName,
       phone,
     };
 
