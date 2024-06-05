@@ -2,10 +2,12 @@ import express from "express";
 import userRoutes from "./router/routers.js";
 import dotenv from "dotenv";
 import cors from "cors";
-
+import connectDb from "../db.js";
 dotenv.config();
 
 const app = express();
+
+connectDb();
 
 // Configurar CORS
 const corsOptions = {
