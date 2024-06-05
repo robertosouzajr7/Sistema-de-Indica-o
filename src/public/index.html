@@ -162,7 +162,7 @@
         if (idUser) {
           try {
             const user = await axios.get(
-              `http://localhost:3000/api/user/${idUser}`,
+              `https://testeaoi2.vercel.app/api/user/${idUser}`,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -181,7 +181,7 @@
 
       fetchUserAndRedirect();
 
-      const endpointUrl = "https://testeapi-azure.vercel.app/api/users";
+      const endpointUrl = "https://testeaoi2.vercel.app/api/users";
       const urlLocal = "http://localhost:3000/api/users";
 
       document
@@ -201,7 +201,7 @@
           };
 
           try {
-            const response = await axios.post(urlLocal, contact, {
+            const response = await axios.post(endpointUrl, contact, {
               headers: {
                 "Content-Type": "application/json",
               },

@@ -155,6 +155,7 @@
     </form>
     <script>
       const urlLocal = "http://localhost:3000/api/leads";
+      const urlProducao = "https://testeaoi2.vercel.app";
       const urlParams = new URLSearchParams(window.location.search);
       const idIndicador = urlParams.get("userId");
 
@@ -176,11 +177,15 @@
           };
 
           try {
-            const response = await axios.post(urlLocal, lead, {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+            const response = await axios.post(
+              `${urlProducao}/api/leads`,
+              lead,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
 
             if (response) {
               createMenssagem();
@@ -199,7 +204,7 @@
         }
         try {
           const user = await axios.get(
-            `http://localhost:3000/api/user/${idIndicador}`,
+            `${urlProducao}/api/user/${idIndicador}`,
             {
               headers: {
                 "Content-Type": "application/json",

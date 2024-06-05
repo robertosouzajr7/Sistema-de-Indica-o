@@ -74,9 +74,9 @@
         const userActiveId = localStorage.getItem("idUserActive");
 
         if (userId) {
-          const urlSite = "https://rhsbconsultoria.ac-page.com/lp_form_2_teste";
-          const urlLocal = "http://127.0.0.1:5500/cadastro.html";
-          const urlSiteCompleto = `${urlLocal}?userId=${encodeURIComponent(
+          const urlProducao = "https://testeaoi2.vercel.app";
+          const urlLocal = `${urlProducao}/cadastro.html`;
+          const urlSiteCompleto = `${urlProducao}?userId=${encodeURIComponent(
             userId
           )}&idUserApi=${userActiveId}`;
 
@@ -93,7 +93,7 @@
       async function getUserById() {
         try {
           const response = await axios.get(
-            `http://localhost:3000/api/user/${localStorage.getItem("userId")}`
+            `${urlProducao}/api/user/${localStorage.getItem("userId")}`
           );
           return response.data;
         } catch (error) {
@@ -102,7 +102,7 @@
       }
 
       async function getLeadsForUser() {
-        const apiUrl = `http://localhost:3000/api/users/${localStorage.getItem(
+        const apiUrl = `${urlProducao}/api/users/${localStorage.getItem(
           "userId"
         )}/leads`;
 
