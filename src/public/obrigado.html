@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Quicksand";
+        color: white;
+      }
+      th,
+      td {
+        color: white;
+        border: 1px solid white;
+        width: 400px;
+        padding: 8px;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        background-image: url("https://withconsultoria.com/wp-content/uploads/2023/10/fundo1-min.jpg");
+      }
+      button {
+        width: 100%;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 900;
+        font-size: 20px;
+      }
+
+      img {
+        max-width: 300px;
+        margin-bottom: 100px;
+      }
+
+      button:hover {
+        background-color: #064414;
+      }
+      button:disabled {
+        background-color: #aaa;
+      }
+    </style>
+    <title>Obrigado</title>
+  </head>
+  <body>
+    <img
+      src="https://withconsultoria.com/wp-content/uploads/2023/10/img31-min.png"
+      alt=""
+    />
+    <h2>Compartilhe seu link de Indicação</h2>
+    <p>e garanta seu desconto!</p>
+    <a href="" id="link"><button type="button">Indicar Agora</button></a>
+    <div id="content"></div>
+
+    <script>
+      window.onload = function () {
+        const userId = localStorage.getItem("userId");
+        const userActiveId = localStorage.getItem("idUserActive");
+
+        if (userId) {
+          const urlSite = "https://rhsbconsultoria.ac-page.com/lp_form_2_teste";
+          const urlLocal = "http://127.0.0.1:5500/cadastro.html";
+          const urlSiteCompleto = `${urlLocal}?userId=${encodeURIComponent(
+            userId
+          )}&idUserApi=${userActiveId}`;
+
+          const mensagem =
+            "Olá gostaria de compartilhar com você este desconto! confira aqui mais informações: " +
+            urlSiteCompleto;
+          const urlWhatApp =
+            "https://wa.me/?text=" + encodeURIComponent(mensagem);
+
+          document.getElementById("link").href = urlWhatApp;
+        }
+      };
+
+      async function getUserById() {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/api/user/${localStorage.getItem("userId")}`
+          );
+          return response.data;
+        } catch (error) {
+          console.error("Erro ao buscar usuário:", error);
+        }
+      }
+
+      async function getLeadsForUser() {
+        const apiUrl = `http://localhost:3000/api/users/${localStorage.getItem(
+          "userId"
+        )}/leads`;
+
+        try {
+          const response = await axios.get(apiUrl);
+          return response.data;
+        } catch (error) {
+          console.error("Erro ao buscar indicados:", error);
+        }
+      }
+
+      function renderContent(user, leads) {
+        const contentDiv = document.getElementById("content");
+        contentDiv.innerHTML = `
+          <p class="boas_vindas" style="text-transform: capitalize;">
+            ${
+              user.hasDiscount
+                ? `Olá ${user.firstName}, seja bem vindo! estes são os seus indicados, você tem um desconto de 50%.`
+                : `Olá ${user.firstName}, seja bem vindo! estes são os seus indicados, Ganhe 50% de desconto Indicando 3 pessoas.`
+            }
+          </p>
+          <table class="listaIndicados">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${leads
+                .map(
+                  (lead) => `
+                <tr class="card">
+                  <td class="nome">${lead.firstName}</td>
+                  <td class="email">${lead.email}</td>
+                </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        `;
+      }
+
+      window.addEventListener("DOMContentLoaded", async () => {
+        const user = await getUserById();
+        const leads = await getLeadsForUser();
+        renderContent(user, leads);
+      });
+    </script>
+  </body>
+</html>

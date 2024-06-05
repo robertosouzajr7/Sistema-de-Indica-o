@@ -3,6 +3,9 @@ import userRoutes from "./router/routers.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDb from "../db.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
 dotenv.config();
 
 const app = express();
@@ -16,7 +19,11 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization", "Api-Token"], // Cabeçalhos permitidos
 };
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors(corsOptions));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 app.use("/api", userRoutes);
