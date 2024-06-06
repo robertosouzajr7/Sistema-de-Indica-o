@@ -8,6 +8,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 
 dotenv.config();
+
 export const createUser = async (req, res) => {
   const { email, firstName, lastName, phone } = req.body;
 

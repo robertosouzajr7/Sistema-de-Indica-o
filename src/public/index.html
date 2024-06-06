@@ -159,16 +159,16 @@
 
       async function fetchUserAndRedirect() {
         const idUser = localStorage.getItem("userId");
+        const urlLocal = "http://localhost:3000";
+        const urlProducao = "https://testeaoi2.vercel.app";
+
         if (idUser) {
           try {
-            const user = await axios.get(
-              `https://testeaoi2.vercel.app/api/user/${idUser}`,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
+            const user = await axios.get(`${urlProducao}/api/user/${idUser}`, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
             console.log(user.data._id);
             if (idUser == user.data._id) {
               window.location.href = "/obrigado.html";

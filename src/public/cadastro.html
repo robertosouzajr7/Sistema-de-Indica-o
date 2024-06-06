@@ -159,6 +159,25 @@
       const urlParams = new URLSearchParams(window.location.search);
       const idIndicador = urlParams.get("userId");
 
+      async function getCupomFromURL() {
+        try {
+          const user = await axios.get(
+            `${urlProducao}/api/user/${idIndicador}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (user) {
+            document.getElementById("nome_Indicador").innerText =
+              user.data.firstName;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
       document
         .getElementById("cadastroForm")
         .addEventListener("submit", async (event) => {
@@ -195,28 +214,6 @@
             alert("Erro ao realizar o cadastro.");
           }
         });
-
-      async function getCupomFromURL() {
-        const idIndicador = urlParams.get("userId");
-        const cupomField = document.getElementById("field[164]");
-        if (cupomField) {
-          cupomField.value = idIndicador;
-        }
-        try {
-          const user = await axios.get(
-            `${urlProducao}/api/user/${idIndicador}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          document.getElementById("nome_Indicador").innerText =
-            user.data.firstName;
-        } catch (error) {
-          console.log(error);
-        }
-      }
 
       getCupomFromURL();
 

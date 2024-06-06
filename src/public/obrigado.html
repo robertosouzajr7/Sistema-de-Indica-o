@@ -69,14 +69,13 @@
     <div id="content"></div>
 
     <script>
+      const userId = localStorage.getItem("userId");
+      const userActiveId = localStorage.getItem("idUserActive");
+      const urlProducao = "https://testeaoi2.vercel.app";
+      const urlLocal = `http://localhost:3000`;
       window.onload = function () {
-        const userId = localStorage.getItem("userId");
-        const userActiveId = localStorage.getItem("idUserActive");
-
         if (userId) {
-          const urlProducao = "https://testeaoi2.vercel.app";
-          const urlLocal = `${urlProducao}/cadastro.html`;
-          const urlSiteCompleto = `${urlProducao}?userId=${encodeURIComponent(
+          const urlSiteCompleto = `${urlProducao}/cadastro.html?userId=${encodeURIComponent(
             userId
           )}&idUserApi=${userActiveId}`;
 
@@ -92,9 +91,8 @@
 
       async function getUserById() {
         try {
-          const response = await axios.get(
-            `${urlProducao}/api/user/${localStorage.getItem("userId")}`
-          );
+          const response = await axios.get(`${urlProducao}/api/user/${userId}`);
+
           return response.data;
         } catch (error) {
           console.error("Erro ao buscar usuário:", error);
@@ -102,9 +100,7 @@
       }
 
       async function getLeadsForUser() {
-        const apiUrl = `${urlProducao}/api/users/${localStorage.getItem(
-          "userId"
-        )}/leads`;
+        const apiUrl = `${urlProducao}/api/users/${userId}/leads`;
 
         try {
           const response = await axios.get(apiUrl);
