@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -231,3 +232,238 @@
     </script>
   </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Quicksand", Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        background-image: url("https://withconsultoria.com/wp-content/uploads/2023/10/fundo1-min.jpg");
+        background-size: cover;
+      }
+      form {
+        max-width: 90%;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+      ._form-title {
+        color: white;
+        font-weight: 800;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: white;
+        font-weight: 600;
+      }
+      input[type="text"],
+      input[type="email"] {
+        width: 95%;
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      ._form_39_submit,
+      button {
+        width: 100%;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 900;
+        font-size: 20px;
+      }
+
+      img {
+        max-width: 300px;
+      }
+
+      button:hover {
+        background-color: #064414;
+      }
+      button:disabled {
+        background-color: #aaa;
+      }
+    </style>
+    <title>Cadastro Indicação</title>
+  </head>
+  <body>
+    <img
+      src="https://withconsultoria.com/wp-content/uploads/2023/10/img31-min.png"
+      alt="Imagem de Indicação"
+    />
+
+    <form id="cadastroForm">
+      <div class="_form-content">
+        <div class="_form_element _x01621772 _full_width _clear">
+          <div class="_form-title">
+            Parabéns você foi indicado por
+            <p id="nome_Indicador"></p>
+          </div>
+        </div>
+        <div class="_form_element _x58322049 _full_width _clear">
+          <div class="_html-code _form-title">
+            <p>Inscreva-se para garantir o Desconto.</p>
+          </div>
+        </div>
+        <div class="_form_element _x09962100 _full_width">
+          <label for="firstName" class="_form-label">Nome</label>
+          <div class="_field-wrapper">
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="Digite seu nome"
+            />
+          </div>
+        </div>
+        <div class="_form_element _x74263289 _full_width">
+          <label for="lastName" class="_form-label">Sobrenome</label>
+          <div class="_field-wrapper">
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Digite seu sobrenome"
+            />
+          </div>
+        </div>
+        <div class="_form_element _x74263289 _full_width">
+          <label for="phone" class="_form-label">Telefone</label>
+          <div class="_field-wrapper">
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              placeholder="Digite seu telefone"
+            />
+          </div>
+        </div>
+        <div class="_form_element _x49881326 _full_width">
+          <label for="email" class="_form-label">Email*</label>
+          <div class="_field-wrapper">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Digite seu email"
+              required
+            />
+          </div>
+        </div>
+        <div class="_button-wrapper _full_width">
+          <button id="_form_39_submit" class="_submit" type="submit">
+            Quero Indicar
+          </button>
+        </div>
+        <div class="_clear-element"></div>
+      </div>
+      <div class="_form-thank-you" style="display: none"></div>
+    </form>
+    <script>
+      const urlLocal = "http://localhost:3000/api/leads";
+      const urlProducao = "https://testeaoi2.vercel.app";
+      const urlParams = new URLSearchParams(window.location.search);
+      const idIndicador = urlParams.get("userId");
+
+      async function getCupomFromURL() {
+        const idIndicador = urlParams.get("userId");
+
+        try {
+          const user = await axios.get(
+            `${urlProducao}/api/user/${idIndicador}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          document.getElementById("nome_Indicador").innerText =
+            user.data.firstName;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      document
+        .getElementById("cadastroForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const nome = document.getElementById("firstName").value;
+          const sobrenome = document.getElementById("lastName").value;
+          const email = document.getElementById("email").value;
+          const phone = document.getElementById("phone").value;
+
+          const lead = {
+            email: email,
+            firstName: nome,
+            lastName: sobrenome,
+            phone: phone,
+            referradBy: idIndicador,
+          };
+
+          try {
+            const response = await axios.post(
+              `${urlProducao}/api/leads`,
+              lead,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (response) {
+              createMenssagem();
+            }
+          } catch (error) {
+            console.error(error);
+            alert("Erro ao realizar o cadastro.");
+          }
+        });
+
+      getCupomFromURL();
+
+      function createMenssagem() {
+        document.querySelector("form").style.display = "none";
+        const menssagem = document.createElement("p");
+        menssagem.innerText =
+          "Obrigado por se cadastrar! enviamos seu cupom de desconto por email!";
+        menssagem.style.color = "white";
+        menssagem.style.fontSize = "20px";
+        menssagem.style.fontWeight = "bold";
+        menssagem.style.textAlign = "center";
+        document.body.appendChild(menssagem);
+      }
+    </script>
+  </body>
+</html>
+>>>>>>> 8a7d23934fac57b35a9f3167605105a2651f782f
