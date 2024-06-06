@@ -69,13 +69,12 @@
     <div id="content"></div>
 
     <script>
+      const userId = localStorage.getItem("userId");
+      const userActiveId = localStorage.getItem("idUserActive");
+      const urlProducao = "https://testeaoi2.vercel.app";
+      const urlLocal = `${urlProducao}/cadastro.html`;
       window.onload = function () {
-        const userId = localStorage.getItem("userId");
-        const userActiveId = localStorage.getItem("idUserActive");
-
         if (userId) {
-          const urlProducao = "https://testeaoi2.vercel.app";
-          const urlLocal = `${urlProducao}/cadastro.html`;
           const urlSiteCompleto = `${urlProducao}?userId=${encodeURIComponent(
             userId
           )}&idUserApi=${userActiveId}`;
